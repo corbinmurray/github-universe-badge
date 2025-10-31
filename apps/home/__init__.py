@@ -12,8 +12,6 @@ GITHUB_USERNAME = "corbinmurray"
 # Global resources
 qr_image = None
 font = None
-last_battery_check = 0
-battery_level = 100
 
 def init():
     """Initialize the home screen - load resources once"""
@@ -40,16 +38,6 @@ def init():
 
 def update():
     """Main update loop - called every frame"""
-    global last_battery_check, battery_level
-    
-    # Check battery every 5 seconds (5000ms) to save power
-    if io.ticks - last_battery_check > 5000:
-        try:
-            from badgeware import get_battery_level
-            battery_level = get_battery_level()
-            last_battery_check = io.ticks
-        except:
-            pass
     
     # Clear screen with a dark background
     screen.brush = brushes.color(10, 20, 30)
@@ -88,11 +76,6 @@ def update():
         error_width = screen.measure_text(error_msg)
         error_x = (160 - error_width) // 2
         screen.text(error_msg, error_x, 60)
-    
-    # Optional: Show battery level in corner
-    screen.brush = brushes.color(80, 80, 80)
-    battery_text = f"{battery_level}%"
-    screen.text(battery_text, 125, 2)
 
 def on_exit():
     """Cleanup when exiting the app"""
